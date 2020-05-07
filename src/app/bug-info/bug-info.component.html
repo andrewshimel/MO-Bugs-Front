@@ -1,5 +1,17 @@
 
-<button (click) = "getBug();">clickhole</button>
-<p>
-{{bugName}}
-</p>
+<div *ngIf = "listAll">
+
+<button *ngFor = "let bug of bugs" (click) = "display(bug.id)">{{bug.commonName}}</button> 
+
+</div>
+<div *ngIf = "displayEntry >= 0">
+    <button (click) = "list()">Home</button>
+    
+    <h1>
+        {{bugs[displayEntry].commonName}}
+    </h1>
+    <h3>
+        {{bugs[displayEntry].scientificName}}
+    </h3>
+    <img src = "{{bugs[displayEntry].url}}">
+</div>

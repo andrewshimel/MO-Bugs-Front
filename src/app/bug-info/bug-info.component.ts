@@ -4,8 +4,10 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 
 interface Bug{
+  id: number;
   commonName: string;
   url: string;
+  scientificName: string;
 }
 
 @Component({
@@ -15,22 +17,50 @@ interface Bug{
 })
 
 export class BugInfoComponent implements OnInit {
+  
+  selectedIndex: number;
+  bugs: Bug[];
+  displayEntry: number;
+  listAll: boolean;
 
-  bugName: string;
-  picture: string;
+
   constructor(private HttpClient: HttpClient) {} 
 
   ngOnInit() {
+    this.getBug();
+    this.list();
+    
   }
   
   async getBug() {
     this.HttpClient.get<Bug[]>('api/bug-admin/bug')
        .subscribe(
         bugArray => {
-          this.bugName = bugArray[0].commonName;
-          this.picture = bugArray[0].url;
+          this.bugs = bugArray;
         },
          (err: HttpErrorResponse) => console.log(`Got error: ${err}`)
        );
   }
+  
+  display(id: number) {
+    this.displayEntry = id - 1;
+    this.listAll = false;  
+  }
+
+  list(){
+    this.displayEntry = -1;
+    this.listAll = true;
+  }
+
+  search(term: string){
+    let results: Bug[];
+    for(let i = 0; i < this.bugs.length; i++){
+      if (this.bugs[i].commonName.includes(term) || this.bugs[i].scientificName.includes(term)){
+        results.push(this.bugs[i]);
+      }
+    }
+    return results;
+  }
+
+
 }
