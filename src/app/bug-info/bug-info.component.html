@@ -1,12 +1,17 @@
+<button (click) = "searchMenuToggle()">Home</button>
+
+
+<div *ngIf = "searchMenu">
+    <input type = "text" id = "searchBar" value = "Missouri Bugs">
+    <button (click) = "search()">Search</button>
+</div>
 
 <div *ngIf = "listAll">
 
-<button *ngFor = "let bug of bugs" (click) = "display(bug.id)">{{bug.commonName}}</button> 
+<button *ngFor = "let result of results" (click) = "display(result.id)">{{result.commonName}}</button> 
 
 </div>
 <div *ngIf = "displayEntry >= 0">
-    <button (click) = "list()">Home</button>
-    
     <h1>
         {{bugs[displayEntry].commonName}}
     </h1>

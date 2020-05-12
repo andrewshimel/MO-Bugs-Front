@@ -22,13 +22,15 @@ export class BugInfoComponent implements OnInit {
   bugs: Bug[];
   displayEntry: number;
   listAll: boolean;
-
-
+  term: string;
+  searchMenu: boolean;
+  results: Bug[]
+  
   constructor(private HttpClient: HttpClient) {} 
 
   ngOnInit() {
     this.getBug();
-    this.list();
+    this.searchMenuToggle();
     
   }
   
@@ -45,21 +47,34 @@ export class BugInfoComponent implements OnInit {
   display(id: number) {
     this.displayEntry = id - 1;
     this.listAll = false;  
+    this.searchMenu = false;
   }
 
-  list(){
+  list(results: Bug[]){
+    if (!results){
+      this.results = results;
+    }
     this.displayEntry = -1;
     this.listAll = true;
+    this.searchMenu = false;
   }
 
-  search(term: string){
-    let results: Bug[];
+  searchMenuToggle(){
+    this.searchMenu = true;
+    this.listAll = false;
+    this.displayEntry = -1;
+  }
+
+  search(){
+    this.term = (<HTMLInputElement>document.getElementById("searchBar")).value;
+    this.results = [];
     for(let i = 0; i < this.bugs.length; i++){
-      if (this.bugs[i].commonName.includes(term) || this.bugs[i].scientificName.includes(term)){
-        results.push(this.bugs[i]);
+      if (this.bugs[i].commonName.includes(this.term) || this.bugs[i].scientificName.includes(this.term)){
+        this.results.push(this.bugs[i]);
       }
     }
-    return results;
+    this.list(this.results);
+    return this.results;
   }
 
 
