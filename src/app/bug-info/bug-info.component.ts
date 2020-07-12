@@ -34,7 +34,7 @@ export class BugInfoComponent implements OnInit {
     
   }
   
-  async getBug() {
+  getBug() {
     this.HttpClient.get<Bug[]>('api/bug-admin/bug')
        .subscribe(
         bugArray => {
