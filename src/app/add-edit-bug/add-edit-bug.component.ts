@@ -5,7 +5,6 @@ import { BugInfoComponent } from '../bug-info/bug-info.component';
 
 
 class Bug{
-  id: number;
   commonName: string;
   url: string;
   scientificName: string;
@@ -19,7 +18,7 @@ class Bug{
 export class AddEditBugComponent implements OnInit {
 
   bug: Bug;
-  SERVER_URL = "http://localhost:8080/bug-admin/";
+  SERVER_URL = "http://localhost:4200/api/bug-admin/bug";
   
 
   constructor(private httpClient: HttpClient){ 
@@ -32,6 +31,7 @@ export class AddEditBugComponent implements OnInit {
   onSubmit(common, scientific){
     this.bug.commonName = common;
     this.bug.scientificName = scientific;
+    this.bug.url = "";
     this.httpClient.post<any>(this.SERVER_URL, this.bug).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
