@@ -69,7 +69,7 @@ export class BugInfoComponent implements OnInit {
     this.term = (<HTMLInputElement>document.getElementById("searchBar")).value;
     this.results = [];
     for(let i = 0; i < this.bugs.length; i++){
-      if (this.bugs[i].commonName.includes(this.term) || this.bugs[i].scientificName.includes(this.term)){
+      if (this.bugs[i].commonName.toLowerCase().includes(this.term.toLowerCase()) || this.bugs[i].scientificName.toLowerCase().includes(this.term.toLowerCase())){
         this.results.push(this.bugs[i]);
       }
     }

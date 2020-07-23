@@ -1,14 +1,9 @@
 
 import {HttpClient} from '@angular/common/http'
 import { Component, OnInit } from '@angular/core';
-import { BugInfoComponent } from '../bug-info/bug-info.component';
 
 
-class Bug{
-  commonName: string;
-  url: string;
-  scientificName: string;
-}
+
 
 @Component({
   selector: 'app-add-edit-bug',
@@ -17,22 +12,27 @@ class Bug{
 })
 export class AddEditBugComponent implements OnInit {
 
-  bug: Bug;
   SERVER_URL = "http://localhost:4200/api/bug-admin/bug";
-  
+  selectedFile;
 
   constructor(private httpClient: HttpClient){ 
   }
 
   ngOnInit() {
-    this.bug = new Bug();
+    
+  }
+
+  onFileChanged(event){
+    this.selectedFile = event.target.files[0];
+
   }
 
   onSubmit(common, scientific){
-    this.bug.commonName = common;
-    this.bug.scientificName = scientific;
-    this.bug.url = "";
-    this.httpClient.post<any>(this.SERVER_URL, this.bug).subscribe(
+    const formData = new FormData();
+    formData.append('common', common);
+    formData.append('scientific', scientific);
+    formData.append('image', this.selectedFile, this.selectedFile.name);
+    this.httpClient.post<any>(this.SERVER_URL, formData).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );
